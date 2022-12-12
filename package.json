@@ -44,6 +44,7 @@
     "node-fetch": "^3.3.0",
     "node-telegram-bot-api": "^0.56.0",
     "npmlog": "^6.0.2",
-    "xstate": "^4.34.0"
+    "xstate": "^4.34.0",
+	"costflow": "^1.2.1"
   }
 }
