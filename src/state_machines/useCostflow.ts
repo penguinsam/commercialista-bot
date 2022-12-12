@@ -7,6 +7,19 @@ import { formatDate, escape } from '../utils'
 import askAccount from './askAccount'
 import askConfirm from './askConfirm'
 
+const config = {
+  mode: "beancount",
+  currency: "HKD",
+  timezone: "Asia/Hong_Kong",
+  account: {
+    cash: "Assets:Cash:HKD",
+    pt: "Expenses:Transport:Public",
+  },
+  formula: {
+    bus: "@Bus 15.80 cash > pt",
+  },
+};
+
 type Context = {
   id: number
   client: TelegramBot
@@ -19,7 +32,7 @@ type Event = { type: 'ANSWER', msg: Message }
 
 const machine = createMachine<Context, Event>({
   id: 'newNote',
-  initial: 'account',
+  initial: 'comment',
   predictableActionArguments: true,
   states: {
     account: {
@@ -35,7 +48,7 @@ const machine = createMachine<Context, Event>({
       }
     },
     comment: {
-      entry: ({ client, id }) => client.sendMessage(id, '🗒 Note', CANCEL_KEYBOARD),
+      entry: client.sendMessage(id, '🗒 Note', CANCEL_KEYBOARD),
       on: {
         ANSWER: {
           actions: assign({ comment: (ctx, { msg: { text } }) => text }),
