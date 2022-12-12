@@ -17,14 +17,14 @@ services:
     build:
       context: .
       target: builder
-    command: npm run watch
+    command: npm run start
     restart: unless-stopped
     volumes:
-      - .:/app:ro
+      - ./shortcuts.json:/app/shortcuts.json:ro
     environment:
       - NTBA_FIX_319=1
       - TELEGRAM_TOKEN
       - ALLOWED_USER_IDS
-      - DEFAULT_CURRENCY=USD
+      - DEFAULT_CURRENCY
       - FAVA_PRIVATE
       - FAVA_PUBLIC
