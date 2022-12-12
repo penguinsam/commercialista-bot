@@ -5,7 +5,7 @@ export const getEntityText = (text: string, { offset, length }: MessageEntity, e
 const parseCurrency = ({ text, entities }: Message) => {
   if (text!.indexOf('€') !== -1) return 'EUR'
   if (text!.indexOf('£') !== -1) return 'GBP'
-  if (!entities && text!.indexOf('$') !== -1) return 'USD'
+  if (!entities && text!.indexOf('$') !== -1) return 'HKD'
 
   const cashtags = entities ? entities!.filter(({ type }) => type === 'cashtag').map(e => getEntityText(text!, e, true)) : text!.match(/[A-Z]{3}/) || []
 
