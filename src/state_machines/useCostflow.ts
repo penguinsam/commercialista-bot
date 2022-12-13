@@ -23,7 +23,7 @@ const config = {
 type Context = {
   id: number
   client: TelegramBot
-  account?: string
+  //account?: string
   comment?: string
   final?: Note
 }
@@ -35,7 +35,7 @@ const machine = createMachine<Context, Event>({
   initial: 'comment',
   predictableActionArguments: true,
   states: {
-    account: {
+/*     account: {
       invoke: {
         id: 'askAccount',
         src: askAccount,
@@ -46,9 +46,9 @@ const machine = createMachine<Context, Event>({
           target: 'comment'
         }
       }
-    },
+    }, */
     comment: {
-      entry: client.sendMessage(id, '🗒 Note', CANCEL_KEYBOARD),
+      entry: ({ client, id }) => client.sendMessage(id, '🗒 Note', CANCEL_KEYBOARD),
       on: {
         ANSWER: {
           actions: assign({ comment: (ctx, { msg: { text } }) => text }),
@@ -61,7 +61,7 @@ const machine = createMachine<Context, Event>({
         final: ctx => ({
           type: 'Note',
           date: formatDate(new Date()),
-          account: ctx.account!,
+          //account: ctx.account!,
           comment: ctx.comment!,
           meta: {}
         } as Note)
@@ -70,7 +70,7 @@ const machine = createMachine<Context, Event>({
         id: 'askConfirm',
         src: askConfirm,
         autoForward: true,
-        data: (ctx) => ({ id: ctx.id, client: ctx.client, question: confirmNote(ctx.final!) }),
+        data: (ctx) => ({ id: ctx.id, client: ctx.client, question: confirmCostflow(ctx.final!) }),
         onDone: {
           actions: async ({ client, id, final }) => {
             try {
@@ -102,6 +102,10 @@ export default (msg: Message, client: TelegramBot) => {
   return service
 }
 
-const confirmNote = ({ account, comment }: Note) => {
+/* const confirmNote = ({ account, comment }: Note) => {
   return `🗒 *${escape(account)}*\n\n${escape(comment)}\n\n*Confirm?*`
+} */
+
+const confirmCostflow = ({ comment }: Note) => {
+  return `🗒 *${escape(comment)}\n\n*Confirm?*`
 }
