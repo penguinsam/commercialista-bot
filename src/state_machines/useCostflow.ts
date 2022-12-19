@@ -7,6 +7,8 @@ import { formatDate, escape } from '../utils'
 //import askFormula from './askFormula'
 import askConfirm from './askConfirm'
 
+const util = require('util') // test
+
 const config = {
   mode: "beancount",
   currency: "HKD",
@@ -120,8 +122,8 @@ const machine = createMachine<Context, Event>({
             try {
               await putEntries([final!])
               //await client.sendMessage(id, '✅ All done!', DEFAULT_KEYBOARD)
-			  client.sendMessage(id, '✅ All done!', DEFAULT_KEYBOARD).then((m) => {
-				client.deleteMessage(id, m.message_id)
+			  client.sendMessage(id, '✅ All done!', DEFAULT_KEYBOARD).then(function (result) {
+				logger.info(result);
 				})
             } catch (err) {
               await client.sendMessage(id, '❗️ Unexpected error', DEFAULT_KEYBOARD)
