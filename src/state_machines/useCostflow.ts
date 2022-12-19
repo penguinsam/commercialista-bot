@@ -41,11 +41,7 @@ const machine = createMachine<Context, Event>({
   predictableActionArguments: true,
   states: {
 	formula: {
-		entry: ({ client, id }) => client.sendMessage(id, '🗒 Formula', CANCEL_KEYBOARD).then((m) => {
-					setTimeout (()=> {
-						client.deleteMessage(id, String(m.message_id));
-						}, 10000)
-				}),
+		entry: ({ client, id }) => client.sendMessage(id, '🗒 Formula', CANCEL_KEYBOARD),
 		on: {
 			ANSWER: {
 				actions: assign({ formula: (ctx, { msg: { text } }) => text }),
@@ -133,11 +129,17 @@ const machine = createMachine<Context, Event>({
 					depth: null
 				}))
 				})
-				*/
 				client.sendMessage(id, '✅ All done!', DEFAULT_KEYBOARD).then((m) => {
 					setTimeout (()=> {
 						client.deleteMessage(id, String(m.message_id));
 						}, 10000)
+				})
+				*/
+				client.sendMessage(id, '✅ All done!', DEFAULT_KEYBOARD).then((m) => {
+					for (let i = 0; i < 6; i++) {
+					setTimeout (()=> {
+						client.deleteMessage(id, String(m.message_id-i));
+						}, 5000)}
 				})
             } catch (err) {
               await client.sendMessage(id, '❗️ Unexpected error', DEFAULT_KEYBOARD)
