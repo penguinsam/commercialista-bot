@@ -3,7 +3,7 @@ import { ConditionPredicate, createMachine, assign } from 'xstate'
 import { CANCEL_KEYBOARD } from '../markup'
 import { isAmount, parseAmount } from '../utils'
 
-const util = require('util') // test
+//const util = require('util') // test
 
 type Context = {
   id: number
@@ -33,10 +33,7 @@ export default createMachine<Context, Event>({
       },
       on: {
         ANSWER: [
-			logger.info('INFO: ', util.inspect(f, {	// test
-				depth: null
-			}))
-			actions: assign<Context, Event>({ final: (ctx, { f }) }),
+			actions: assign<Context, Event>({ final: (ctx, { f }) => f }),
             target: 'done'
 		/*
           {
