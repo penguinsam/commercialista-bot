@@ -4,7 +4,7 @@ import { createMachine, interpret, assign } from 'xstate'
 import { Posting, putEntries, Transaction } from '../fava'
 import { CANCEL_KEYBOARD, DEFAULT_KEYBOARD } from '../markup'
 import { formatDate, escape } from '../utils'
-import askFormula from './askFormula'
+//import askFormula from './askFormula'
 import askConfirm from './askConfirm'
 
 const config = {
@@ -23,6 +23,7 @@ const config = {
 type Context = {
   id: number
   client: TelegramBot
+  comment?: string
   postings: Posting[]
   //payee?: string
   //narration?: string
@@ -36,22 +37,14 @@ const machine = createMachine<Context, Event>({
   initial: 'formula',
   predictableActionArguments: true,
   states: {
-	formula: {
-      invoke: {
-        id: 'askFormula',
-        src: askFormula,
-        autoForward: true,
-        data: (ctx) => ({ id: ctx.id, client: ctx.client }),
-        onDone: {
-		/*
-          actions: assign({
-            narration: (ctx, { data }) => data.narration,
-            payee: (ctx, { data }) => data.payee
-          }),
-		*/
-          target: 'confirm'
-        }
-      }
+	comment: {
+		entry: ({ client, id }) => client.sendMessage(id, '🗒 Note', CANCEL_KEYBOARD),
+		on: {
+			ANSWER: {
+				actions: assign({ comment: (ctx, { msg: { text } }) => text }),
+			target: 'confirm'
+			}
+		}
     },
   /*
     narration: {
@@ -113,7 +106,7 @@ const machine = createMachine<Context, Event>({
           payee: '',
           postings: [],
           meta: {},
-          tags: '#Costflow',
+          tags: ['#Costflow'],
           links: []
         } as Transaction)
       }),
