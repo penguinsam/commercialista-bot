@@ -44,10 +44,12 @@ const machine = createMachine<Context, Event>({
 		entry: ({ client, id }) => client.sendMessage(id, '🗒 Formula', CANCEL_KEYBOARD),
 		on: {
 			ANSWER: {
-				const { output } = await costflow.parse(text, config);
-				actions: assign({ formula: (ctx, { msg: { output } }) => output }),
+				actions: assign({ formula: (ctx, { msg: { text } }) => {
+					return await costflow.parse(text, config);
+				} }),
 			target: 'confirm'
 			}
+      }
 		}
     },
   /*
