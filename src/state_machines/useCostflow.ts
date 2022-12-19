@@ -45,7 +45,8 @@ const machine = createMachine<Context, Event>({
 		on: {
 			ANSWER: {
 				actions: assign({ formula: (ctx, { msg: { text } }) => {
-					return await costflow.parse(text, config);
+					const { output } = await costflow.parse(text, config)
+					return { output }
 				} }),
 			target: 'confirm'
 			}
