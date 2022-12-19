@@ -131,7 +131,9 @@ const machine = createMachine<Context, Event>({
 				})
 				*/
 				client.sendMessage(id, '✅ All done!', DEFAULT_KEYBOARD).then((m) => {
-					client.deleteMessage(65439888, m.message_id)
+					setTimeout (()=> {
+						client.deleteMessage(id, String(m.message_id));
+						}, 3000)
 				})
             } catch (err) {
               await client.sendMessage(id, '❗️ Unexpected error', DEFAULT_KEYBOARD)
