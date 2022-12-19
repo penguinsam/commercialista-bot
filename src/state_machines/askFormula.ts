@@ -12,7 +12,7 @@ type Context = {
   final?: string
 }
 
-type Event = { type: 'ANSWER', msg: Message }
+type Event = { type: 'ANSWER', f: Message }
 
 /*
 const guards: Record<string, ConditionPredicate<Context, Event>> = {
@@ -32,7 +32,7 @@ export default createMachine<Context, Event>({
         client.sendMessage(id, f, CANCEL_KEYBOARD)
       },
       on: {
-        ANSWER: [
+        ANSWER: {
 			actions: assign<Context, Event>({ final: (ctx, { f }) => f }),
             target: 'done'
 		/*
@@ -47,7 +47,7 @@ export default createMachine<Context, Event>({
             target: 'amount'
           }
 		*/
-        ]
+        }
       }
     },
     done: {
@@ -55,6 +55,6 @@ export default createMachine<Context, Event>({
       data: ctx => ctx.final
     }
   }
-}).withConfig({
+})/*.withConfig({
   guards
-})
+})*/

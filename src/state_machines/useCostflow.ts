@@ -23,9 +23,10 @@ const config = {
 type Context = {
   id: number
   client: TelegramBot
-  //account?: string
-  comment?: string
-  final?: Note
+  postings: Posting[]
+  //payee?: string
+  //narration?: string
+  final?: Transaction
 }
 
 type Event = { type: 'ANSWER', msg: Message }
@@ -153,6 +154,7 @@ export default (msg: Message, client: TelegramBot) => {
   return service
 }
 
+/*
 export function confirmTransaction ({ payee, narration, postings }: Transaction) {
   let r = `🧾 ${payee ? `*${escape(payee!)}* ${escape(narration)}` : `*${escape(narration)}*`}\n\n`
   r += postings
@@ -162,3 +164,10 @@ export function confirmTransaction ({ payee, narration, postings }: Transaction)
 
   return r
 }
+*/
+export function confirmTransaction ({ postings }: Transaction) {
+  let r = '\n*Confirm?*'
+
+  return r
+}
+
