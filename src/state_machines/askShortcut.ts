@@ -51,7 +51,7 @@ const shortcutsKeyboard = () => ({
     resize_keyboard: true,
     keyboard: [
       [{ text: CANCEL }],
-      ...chunks(SHORTCUTS.map(({ icon }) => ({ text: icon })), 3)
+      ...chunks(SHORTCUTS.map(({ name }) => ({ text: name })), 10)
     ]
   }
 })
