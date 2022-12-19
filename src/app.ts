@@ -22,7 +22,7 @@ async function start () {
   ACCOUNTS = ledgerData.accounts.sort((a, b) => a.localeCompare(b))
   logger.verbose('startup', `Found ${ACCOUNTS.length} accounts`)
 
-  process.env.DEFAULT_CURRENCY = process.env.DEFAULT_CURRENCY || ledgerData.operatingCurrency[0] || 'EUR'
+  process.env.DEFAULT_CURRENCY = process.env.DEFAULT_CURRENCY || ledgerData.operatingCurrency[0] || 'HKD'
   logger.verbose('startup', `DEFAULT_CURRENCY is ${process.env.DEFAULT_CURRENCY}`)
 
   await loadShortcuts()

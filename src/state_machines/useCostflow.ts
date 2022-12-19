@@ -23,7 +23,7 @@ const config = {
 type Context = {
   id: number
   client: TelegramBot
-  comment?: string
+  formula?: string
   postings: Posting[]
   //payee?: string
   //narration?: string
@@ -37,11 +37,11 @@ const machine = createMachine<Context, Event>({
   initial: 'formula',
   predictableActionArguments: true,
   states: {
-	comment: {
-		entry: ({ client, id }) => client.sendMessage(id, '🗒 Note', CANCEL_KEYBOARD),
+	formula: {
+		entry: ({ client, id }) => client.sendMessage(id, '🗒 Formula', CANCEL_KEYBOARD),
 		on: {
 			ANSWER: {
-				actions: assign({ comment: (ctx, { msg: { text } }) => text }),
+				actions: assign({ formula: (ctx, { msg: { text } }) => text }),
 			target: 'confirm'
 			}
 		}
@@ -106,7 +106,7 @@ const machine = createMachine<Context, Event>({
           payee: '',
           postings: [],
           meta: {},
-          tags: ['#Costflow'],
+          tags: ['costflow'],
           links: []
         } as Transaction)
       }),
@@ -120,6 +120,7 @@ const machine = createMachine<Context, Event>({
             try {
               await putEntries([final!])
               await client.sendMessage(id, '✅ All done!', DEFAULT_KEYBOARD)
+			  await client.deleteMessage(id, msg.message_id)
             } catch (err) {
               await client.sendMessage(id, '❗️ Unexpected error', DEFAULT_KEYBOARD)
             }
