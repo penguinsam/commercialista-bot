@@ -1,7 +1,7 @@
 import TelegramBot, { Message } from 'node-telegram-bot-api'
 import costflow from 'costflow'
 import { createMachine, interpret, assign } from 'xstate'
-import { Note, putEntries } from '../fava'
+import { Posting, putEntries, Transaction } from '../fava'
 import { CANCEL_KEYBOARD, DEFAULT_KEYBOARD } from '../markup'
 import { formatDate, escape } from '../utils'
 import askFormula from './askFormula'
