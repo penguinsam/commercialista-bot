@@ -4,7 +4,7 @@ import { createMachine, interpret, assign } from 'xstate'
 import { Note, putEntries } from '../fava'
 import { CANCEL_KEYBOARD, DEFAULT_KEYBOARD } from '../markup'
 import { formatDate, escape } from '../utils'
-import askAccount from './askAccount'
+import askFormula from './askFormula'
 import askConfirm from './askConfirm'
 
 const config = {
@@ -31,46 +31,96 @@ type Context = {
 type Event = { type: 'ANSWER', msg: Message }
 
 const machine = createMachine<Context, Event>({
-  id: 'newNote',
-  initial: 'comment',
+  id: 'newTransaction',
+  initial: 'formula',
   predictableActionArguments: true,
   states: {
-/*     account: {
+	formula: {
       invoke: {
-        id: 'askAccount',
-        src: askAccount,
+        id: 'askFormula',
+        src: askFormula,
         autoForward: true,
-        data: (ctx) => ({ id: ctx.id, client: ctx.client, doneAllowed: false }),
+        data: (ctx) => ({ id: ctx.id, client: ctx.client }),
         onDone: {
-          actions: assign({ account: (ctx, { data }) => data }),
-          target: 'comment'
-        }
-      }
-    }, */
-    comment: {
-      entry: ({ client, id }) => client.sendMessage(id, '🗒 Note', CANCEL_KEYBOARD),
-      on: {
-        ANSWER: {
-          actions: assign({ comment: (ctx, { msg: { text } }) => text }),
+		/*
+          actions: assign({
+            narration: (ctx, { data }) => data.narration,
+            payee: (ctx, { data }) => data.payee
+          }),
+		*/
           target: 'confirm'
         }
       }
     },
+  /*
+    narration: {
+      invoke: {
+        id: 'askNarration',
+        src: askNarration,
+        autoForward: true,
+        data: (ctx) => ({ id: ctx.id, client: ctx.client, askPayee: true, askNarration: true }),
+        onDone: {
+          actions: assign({
+            narration: (ctx, { data }) => data.narration,
+            payee: (ctx, { data }) => data.payee
+          }),
+          target: 'account'
+        }
+      }
+    },
+    account: {
+      invoke: {
+        id: 'askAccount',
+        src: askAccount,
+        autoForward: true,
+        data: (ctx) => ({ id: ctx.id, client: ctx.client, doneAllowed: ctx.postings.length >= 2 }),
+        onDone: [
+          {
+            cond: (ctx, { data }) => data === undefined,
+            target: 'confirm'
+          },
+          {
+            actions: assign({ currentAccount: (ctx, { data }) => data }),
+            target: 'amount'
+          }
+        ]
+      }
+    },
+    amount: {
+      invoke: {
+        id: 'askAmount',
+        src: askAmount,
+        autoForward: true,
+        data: (ctx) => ({ id: ctx.id, client: ctx.client }),
+        onDone: {
+          actions: assign<Context, DoneInvokeEvent<any>>({
+            postings: (ctx, { data }) => [...ctx.postings, { account: ctx.currentAccount, amount: data } as Posting],
+            currentAccount: () => undefined
+          }),
+          target: 'account'
+        }
+      }
+    },
+	*/
     confirm: {
       entry: assign<Context, Event>({
         final: ctx => ({
-          type: 'Note',
+          type: 'Transaction',
           date: formatDate(new Date()),
-          //account: ctx.account!,
-          comment: ctx.comment!,
-          meta: {}
-        } as Note)
+          flag: '*',
+          narration: '',
+          payee: '',
+          postings: [],
+          meta: {},
+          tags: '#Costflow',
+          links: []
+        } as Transaction)
       }),
       invoke: {
         id: 'askConfirm',
         src: askConfirm,
         autoForward: true,
-        data: (ctx) => ({ id: ctx.id, client: ctx.client, question: confirmCostflow(ctx.final!) }),
+        data: (ctx) => ({ id: ctx.id, client: ctx.client, question: confirmTransaction(ctx.final!) }),
         onDone: {
           actions: async ({ client, id, final }) => {
             try {
@@ -93,19 +143,22 @@ const machine = createMachine<Context, Event>({
 export default (msg: Message, client: TelegramBot) => {
   const context = {
     id: msg.chat!.id,
-    client
+    client,
+    postings: []
   }
 
   const service = interpret<Context, any, Event, any, any>(machine.withContext(context))
-  service.start()
 
+  service.start()
   return service
 }
 
-/* const confirmNote = ({ account, comment }: Note) => {
-  return `🗒 *${escape(account)}*\n\n${escape(comment)}\n\n*Confirm?*`
-} */
+export function confirmTransaction ({ payee, narration, postings }: Transaction) {
+  let r = `🧾 ${payee ? `*${escape(payee!)}* ${escape(narration)}` : `*${escape(narration)}*`}\n\n`
+  r += postings
+    .map(({ account, amount }) => `_${escape(account)}_\`\t${escape(amount)}\``)
+    .join('\n')
+  r += '\n*Confirm?*'
 
-const confirmCostflow = ({ comment }: Note) => {
-  return `🗒 *${escape(comment)}\n\n*Confirm?*`
+  return r
 }

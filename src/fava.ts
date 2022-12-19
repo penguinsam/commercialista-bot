@@ -1,6 +1,8 @@
 import axios from 'axios'
 import logger from 'npmlog'
 
+const util = require('util') // test
+
 const ENDPOINT = process.env.FAVA_PRIVATE! + '/api'
 export const FRONTEND = process.env.FAVA_PUBLIC || process.env.FAVA_PRIVATE!
 
@@ -71,6 +73,9 @@ type Entry = Transaction | Balance | Note
 
 export async function putEntries (e: Entry[]) {
   try {
+	logger.info('INFO: ', util.inspect(e, {	// test
+		depth: null
+	}))
     const a = await axios({
       method: 'PUT',
       url: ENDPOINT + '/add_entries',
