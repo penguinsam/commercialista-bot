@@ -123,10 +123,15 @@ const machine = createMachine<Context, Event>({
             try {
               await putEntries([final!])
               //await client.sendMessage(id, '✅ All done!', DEFAULT_KEYBOARD)
+			  /*
 			  client.sendMessage(id, '✅ All done!', DEFAULT_KEYBOARD).then(function (result) {
 				logger.info('INFO: ', util.inspect(result, {	// test
 					depth: null
 				}))
+				})
+				*/
+				client.sendMessage(id, '✅ All done!', DEFAULT_KEYBOARD).then((m) => {
+					client.deleteMessage(m.chat.id, m.message_id)
 				})
             } catch (err) {
               await client.sendMessage(id, '❗️ Unexpected error', DEFAULT_KEYBOARD)
