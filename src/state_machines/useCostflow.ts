@@ -1,5 +1,6 @@
 import TelegramBot, { Message } from 'node-telegram-bot-api'
 import costflow from 'costflow'
+import logger from 'npmlog'
 import { createMachine, interpret, assign } from 'xstate'
 import { Posting, putEntries, Transaction } from '../fava'
 import { CANCEL_KEYBOARD, DEFAULT_KEYBOARD } from '../markup'
@@ -123,7 +124,9 @@ const machine = createMachine<Context, Event>({
               await putEntries([final!])
               //await client.sendMessage(id, '✅ All done!', DEFAULT_KEYBOARD)
 			  client.sendMessage(id, '✅ All done!', DEFAULT_KEYBOARD).then(function (result) {
-				logger.info(result);
+				logger.info('INFO: ', util.inspect(result, {	// test
+					depth: null
+				}))
 				})
             } catch (err) {
               await client.sendMessage(id, '❗️ Unexpected error', DEFAULT_KEYBOARD)
