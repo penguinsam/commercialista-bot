@@ -44,7 +44,11 @@ export default class Bot {
 
       if (msg.text === CANCEL || msg.text === '/cancel') {
         this._machines[msg.chat.id] = undefined
-        return this._client.sendMessage(msg.chat.id, '✅ Cancelled', DEFAULT_KEYBOARD)
+        return this._client.sendMessage(msg.chat.id, '✅ Cancelled', DEFAULT_KEYBOARD).then((m) => {
+					setTimeout (()=> {
+						client.deleteMessage(m.chat.id, String(m.message_id));
+						}, 10000)
+				})
       }
 
       try {
