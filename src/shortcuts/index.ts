@@ -20,10 +20,10 @@ export const loadShortcuts = async () => {
   }
 
   SHORTCUTS = (json as ShortcutsFile).shortcuts
-  COMPILED_SHORTCUTS = Object.fromEntries(SHORTCUTS.map(s => [s.icon, buildShortcut(s)]))
+  COMPILED_SHORTCUTS = Object.fromEntries(SHORTCUTS.map(s => [s.name, buildShortcut(s)]))
 }
 
-export const findShortcut = (q: string) => SHORTCUTS.find(({ icon }) => icon === q)
+export const findShortcut = (q: string) => SHORTCUTS.find(({ name }) => name === q)
 
 export const getShortcutMachine = (q: string) => COMPILED_SHORTCUTS[q]
 
