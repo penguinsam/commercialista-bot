@@ -50,13 +50,12 @@ const machine = createMachine<Context, Event>({
       }
     },
     costflow: {
-      invoke: {
-        data: (ctx) => ({ id: ctx.id, client: ctx.client }),
-        onDone: {
-          actions: await costflow.parse(ctx.text, config),
+      entry: formula => logger.info('INFO: ', util.inspect(formula, {  // test
+          depth: null
+        })),
+      onDone: {
           target: 'confirm'
         }
-      }
     },
   /*
     narration: {
