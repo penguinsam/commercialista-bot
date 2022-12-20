@@ -27,7 +27,7 @@ type Context = {
   id: number
   client: TelegramBot
   formula?: string
-  output?: any
+  output?: {}
   postings: Posting[]
   //payee?: string
   //narration?: string
@@ -46,7 +46,7 @@ const machine = createMachine<Context, Event>({
       on: {
         ANSWER: {
           //actions: assign({ formula: (ctx, { msg: { text } }) => text }),
-          actions: assign({ { output }: (ctx, { msg: { text } }) => costflow.parse(text, config) }),
+          actions: assign({ output : (ctx, { msg: { text } }) => costflow.parse(text, config) }),
           target: 'costflow'
         }
       }
