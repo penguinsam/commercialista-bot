@@ -53,9 +53,7 @@ const machine = createMachine<Context, Event>({
       entry: formula => logger.info('INFO: ', util.inspect(formula, {  // test
           depth: null
         })),
-      onDone: {
-          target: 'confirm'
-        }
+      target: 'confirm'
     },
   /*
     narration: {
