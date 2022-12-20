@@ -46,9 +46,7 @@ const machine = createMachine<Context, Event>({
       on: {
         ANSWER: {
           //actions: assign({ formula: (ctx, { msg: { text } }) => text }),
-          actions: assign({ formula: (ctx, { msg: { text } }) => {
-            return String(costflow.parse(text, config))
-          }}),
+          actions: assign({ formula: (ctx, { msg: { text } }) => String(costflow.parse(text, config))}),
           target: 'costflow'
         }
       }
