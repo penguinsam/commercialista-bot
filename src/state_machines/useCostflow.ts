@@ -44,7 +44,8 @@ const machine = createMachine<Context, Event>({
       entry: ({ client, id }) => client.sendMessage(id, '🗒 Formula', CANCEL_KEYBOARD),
       on: {
         ANSWER: {
-          actions: assign({ formula: (ctx, { msg: { text } }) => text }),
+          //actions: assign({ formula: (ctx, { msg: { text } }) => text }),
+          actions: assign({ formula: (ctx, { msg: { text } }) => costflow.parse(text, config) }),
           target: 'costflow'
         }
       }
