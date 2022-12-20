@@ -40,14 +40,25 @@ const machine = createMachine<Context, Event>({
   initial: 'formula',
   predictableActionArguments: true,
   states: {
-	formula: {
-		entry: ({ client, id }) => client.sendMessage(id, '🗒 Formula', CANCEL_KEYBOARD),
-		on: {
-			ANSWER: {
-				actions: assign({ formula: (ctx, { msg: { text } }) => text }),
-			target: 'confirm'
-			}
-		}
+    formula: {
+      entry: ({ client, id }) => client.sendMessage(id, '🗒 Formula', CANCEL_KEYBOARD),
+      on: {
+        ANSWER: {
+          actions: assign({ formula: (ctx, { msg: { text } }) => text }),
+          target: 'costflow'
+        }
+      }
+    },
+    costflow: {
+      invoke: {
+        data: (ctx) => { await costflow.parse(ctx.text, config) },
+        onDone: {
+          actions: logger.info('INFO: ', util.inspect(ctx.text, { // test
+            depth: null
+          })),
+          target: 'confirm'
+        }
+      }
     },
   /*
     narration: {
