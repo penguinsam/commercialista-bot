@@ -106,7 +106,7 @@ const machine = createMachine<Context, Event>({
           type: 'Transaction',
           date: formatDate(new Date()),
           flag: '*',
-          narration: '',
+          narration: ctx.text,
           payee: '',
           postings: [],
           meta: {},
