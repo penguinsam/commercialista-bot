@@ -26,9 +26,6 @@ export const buildNarration = (narration: ShortcutNarration, payee: ShortcutPaye
         const askNarration = narration === 'ask'
         const n = !askNarration ? narration : undefined
         const p = !askPayee && payee !== 'ignore' ? payee : undefined
-        if (p == '-') {
-          p = undefined
-        }
         return { id, client, askPayee, askNarration, narration: n, payee: p }
       },
       onDone: {
