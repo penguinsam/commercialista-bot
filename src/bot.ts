@@ -74,7 +74,10 @@ export default class Bot {
             this._machines[msg.chat.id] = useCostflow(msg, this._client)
             break
           default:
-            return this._client.sendMessage(msg.chat.id, '👋 Hi there!', DEFAULT_KEYBOARD)
+            return this._client.sendMessage(msg.chat.id, '我有咩嘢幫到你您呀 🛸', DEFAULT_KEYBOARD).then((m) => {
+              setTimeout (()=> {
+                client.deleteMessage(id, String(m.message_id));
+              }, 10000)})
         }
       } catch (err) {
         logger.error('bot', 'Unexpected error processing a message:', (err as any).message)

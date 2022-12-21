@@ -8,7 +8,8 @@ export const DEFAULT_KEYBOARD = {
   reply_markup: {
     resize_keyboard: true,
     keyboard: [
-      [{ text: NEW_TRANSACTION }, { text: USE_SHORTCUT }, { text: USE_COSTFLOW }],
+      [{ text: NEW_TRANSACTION }],
+      [{ text: USE_SHORTCUT }, { text: USE_COSTFLOW }],
       [{ text: NEW_BALANCE }, { text: NEW_NOTE }, { text: GET_ERRORS }]
     ]
   }
