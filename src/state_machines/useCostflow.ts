@@ -52,56 +52,6 @@ const machine = createMachine<Context, Event>({
         }
       }
     },
-  /*
-    narration: {
-      invoke: {
-        id: 'askNarration',
-        src: askNarration,
-        autoForward: true,
-        data: (ctx) => ({ id: ctx.id, client: ctx.client, askPayee: true, askNarration: true }),
-        onDone: {
-          actions: assign({
-            narration: (ctx, { data }) => data.narration,
-            payee: (ctx, { data }) => data.payee
-          }),
-          target: 'account'
-        }
-      }
-    },
-    account: {
-      invoke: {
-        id: 'askAccount',
-        src: askAccount,
-        autoForward: true,
-        data: (ctx) => ({ id: ctx.id, client: ctx.client, doneAllowed: ctx.postings.length >= 2 }),
-        onDone: [
-          {
-            cond: (ctx, { data }) => data === undefined,
-            target: 'confirm'
-          },
-          {
-            actions: assign({ currentAccount: (ctx, { data }) => data }),
-            target: 'amount'
-          }
-        ]
-      }
-    },
-    amount: {
-      invoke: {
-        id: 'askAmount',
-        src: askAmount,
-        autoForward: true,
-        data: (ctx) => ({ id: ctx.id, client: ctx.client }),
-        onDone: {
-          actions: assign<Context, DoneInvokeEvent<any>>({
-            postings: (ctx, { data }) => [...ctx.postings, { account: ctx.currentAccount, amount: data } as Posting],
-            currentAccount: () => undefined
-          }),
-          target: 'account'
-        }
-      }
-    },
-	*/
     confirm: {
       entry: assign<Context, Event>({
         final: ctx => ({
@@ -125,25 +75,12 @@ const machine = createMachine<Context, Event>({
           actions: async ({ client, id, final }) => {
             try {
               await putEntries([final!])
-              //await client.sendMessage(id, '✅ All done!', DEFAULT_KEYBOARD)
-			  /*
-			  client.sendMessage(id, '✅ All done!', DEFAULT_KEYBOARD).then(function (result) {
-				logger.info('INFO: ', util.inspect(result, {	// test
-					depth: null
-				}))
-				})
-				client.sendMessage(id, '✅ All done!', DEFAULT_KEYBOARD).then((m) => {
-					setTimeout (()=> {
-						client.deleteMessage(id, String(m.message_id));
-						}, 10000)
-				})
-				*/
-				client.sendMessage(id, '✅ All done!', DEFAULT_KEYBOARD).then((m) => {
-					for (let i = 0; i < 6; i++) {
-					setTimeout (()=> {
-						client.deleteMessage(id, String(m.message_id-i));
-						}, 5000)}
-				})
+              client.sendMessage(id, '✅ All done!', DEFAULT_KEYBOARD).then((m) => {
+      					for (let i = 0; i < 6; i++) {
+      					setTimeout (()=> {
+      						client.deleteMessage(id, String(m.message_id-i));
+      						}, 5000)}
+      				})
             } catch (err) {
               await client.sendMessage(id, '❗️ Unexpected error', DEFAULT_KEYBOARD)
             }
