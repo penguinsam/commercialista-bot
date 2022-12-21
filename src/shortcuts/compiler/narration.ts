@@ -29,16 +29,12 @@ export const buildNarration = (narration: ShortcutNarration, payee: ShortcutPaye
         const askNarration = narration === 'ask'
         const n = !askNarration ? narration : undefined
         const p = !askPayee && payee !== 'ignore' ? payee : undefined
-
-        logger.info('narration: ', util.inspect(payee, { // test
-                depth: null
-              }))
         return { id, client, askPayee, askNarration, narration: n, payee: p }
       },
       onDone: {
         actions: assign<Context, DoneInvokeEvent<any>>({
           narration: (ctx, { data }) => data.narration,
-          payee: (ctx, { data }) => data.payee
+          payee: (ctx, { data }) => data.payee.replace("-", "")
         }),
         target: 'questions'
       }
