@@ -46,6 +46,10 @@ const machine = createMachine<Context, Event>({
       on: {
         ANSWER: {
           actions: assign({ formula: (ctx, { msg: { text } }) => {
+            const { output } = costflow.parse(text, config)
+            logger.info('INFO: ', util.inspect(output, {  // test
+              depth: null
+            }))
             return text
           }}),
           target: 'confirm'
