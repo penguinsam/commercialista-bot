@@ -30,7 +30,7 @@ export const buildNarration = (narration: ShortcutNarration, payee: ShortcutPaye
         const n = !askNarration ? narration : undefined
         const p = !askPayee && payee !== 'ignore' ? payee : undefined
 
-        logger.info('INFO: ', util.inspect(payee, { // test
+        logger.info('narration: ', util.inspect(payee, { // test
                 depth: null
               }))
         return { id, client, askPayee, askNarration, narration: n, payee: p }
