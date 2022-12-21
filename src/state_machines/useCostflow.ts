@@ -47,7 +47,7 @@ const machine = createMachine<Context, Event>({
         ANSWER: {
           actions: assign({ formula: (ctx, { msg: { text } }) => {
             
-            logger.info('INFO: ', util.inspect(costflow.parse(text, config), {  // test
+            logger.info('INFO: ', util.inspect(String(costflow.parse(text, config)), {  // test
               depth: null
             }))
             return text
