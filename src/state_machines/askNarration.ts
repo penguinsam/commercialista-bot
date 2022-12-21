@@ -36,8 +36,8 @@ export default createMachine<Context, Event>({
             const [a, ...b] = text!.split(':')
             if (b.length === 0) return { ...ctx, narration: a }
 
-            if (payee.localeCompare("-")) {
-              payee = ""
+            if (ctx.payee.localeCompare("-")) {
+              ctx.payee = ""
             }
 
             return {
