@@ -2,9 +2,6 @@ import { assign, DoneInvokeEvent } from 'xstate'
 import { Context, StateNode } from '.'
 import askNarration from '../../state_machines/askNarration'
 import { ShortcutNarration, ShortcutPayee } from '../schema'
-import logger from 'npmlog'
-
-const util = require('util') // test
 
 export const buildNarration = (narration: ShortcutNarration, payee: ShortcutPayee): StateNode => {
   if (narration !== 'ask' && payee !== 'ask') {

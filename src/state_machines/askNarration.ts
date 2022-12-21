@@ -1,9 +1,6 @@
 import TelegramBot, { Message } from 'node-telegram-bot-api'
 import { assign, createMachine } from 'xstate'
 import { NO_KEYBOARD } from '../markup'
-import logger from 'npmlog'
-
-const util = require('util') // test
 
 type Context = {
   id: number
@@ -38,10 +35,6 @@ export default createMachine<Context, Event>({
 
             const [a, ...b] = text!.split(':')
             if (b.length === 0) return { ...ctx, narration: a }
-
-            logger.info('askNarration: ', util.inspect(ctx, { // test
-                depth: null
-              }))
 
             return {
               ...ctx,

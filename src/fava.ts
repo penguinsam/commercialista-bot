@@ -73,9 +73,9 @@ type Entry = Transaction | Balance | Note
 
 export async function putEntries (e: Entry[]) {
   try {
-	logger.info('INFO: ', util.inspect(e, {	// test
-		depth: null
-	}))
+    logger.info('INFO: ', util.inspect(e, {	// test
+		  depth: null}))
+    
     const a = await axios({
       method: 'PUT',
       url: ENDPOINT + '/add_entries',
