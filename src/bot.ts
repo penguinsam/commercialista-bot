@@ -44,7 +44,12 @@ export default class Bot {
 
       if (msg.text === CANCEL || msg.text === '/cancel') {
         this._machines[msg.chat.id] = undefined
-        return this._client.sendMessage(msg.chat.id, '✅ Cancelled', DEFAULT_KEYBOARD)
+        return this._client.sendMessage(msg.chat.id, '✅ Cancelled', DEFAULT_KEYBOARD).then((m) => {
+          for (let i = 0; i < 2; i++) {
+            setTimeout (()=> {
+              this._client.deleteMessage(msg.chat.id, String(m.message_id-i));
+            }, 5000)}
+          })
       }
 
       try {
@@ -74,7 +79,7 @@ export default class Bot {
             this._machines[msg.chat.id] = useCostflow(msg, this._client)
             break
           default:
-            return this._client.sendMessage(msg.chat.id, '我有咩嘢幫到你您呀 🛸', DEFAULT_KEYBOARD).then((m) => {
+            return this._client.sendMessage(msg.chat.id, '我有咩幫到你您 🛸', DEFAULT_KEYBOARD).then((m) => {
               setTimeout (()=> {
                 this._client.deleteMessage(msg.chat.id, String(m.message_id));
               }, 10000)})
