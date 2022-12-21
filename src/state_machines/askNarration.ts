@@ -3,6 +3,8 @@ import { assign, createMachine } from 'xstate'
 import { NO_KEYBOARD } from '../markup'
 import logger from 'npmlog'
 
+const util = require('util') // test
+
 type Context = {
   id: number
   client: TelegramBot
