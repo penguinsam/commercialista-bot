@@ -31,7 +31,7 @@ export default createMachine<Context, Event>({
         ANSWER: {
           actions: assign((ctx, { msg: { text } }) => {
             if (text.localeCompare("-")) {
-              ctx.payee  = false
+              ctx.payee = ""
             }
 
             if (!ctx.askPayee) return { ...ctx, narration: text! }
