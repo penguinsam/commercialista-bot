@@ -71,7 +71,12 @@ const machine = createMachine<Context, Event>({
           actions: async ({ client, id, final }) => {
             try {
               await putEntries([final!])
-              await client.sendMessage(id, '✅ All done!', DEFAULT_KEYBOARD)
+              await client.sendMessage(id, '✅ All done!', DEFAULT_KEYBOARD).then((m) => {
+                for (let i = 0; i < 6; i++) {
+                setTimeout (()=> {
+                  client.deleteMessage(id, String(m.message_id-i));
+                  }, 5000)}
+              })
             } catch (err) {
               await client.sendMessage(id, '❗️ Unexpected error', DEFAULT_KEYBOARD)
             }
