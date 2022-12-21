@@ -2,6 +2,9 @@ import { assign, DoneInvokeEvent } from 'xstate'
 import { Context, StateNode } from '.'
 import askNarration from '../../state_machines/askNarration'
 import { ShortcutNarration, ShortcutPayee } from '../schema'
+import logger from 'npmlog'
+
+const util = require('util') // test
 
 export const buildNarration = (narration: ShortcutNarration, payee: ShortcutPayee): StateNode => {
   if (narration !== 'ask' && payee !== 'ask') {
@@ -26,6 +29,10 @@ export const buildNarration = (narration: ShortcutNarration, payee: ShortcutPaye
         const askNarration = narration === 'ask'
         const n = !askNarration ? narration : undefined
         const p = !askPayee && payee !== 'ignore' ? payee : undefined
+
+        logger.info('INFO: ', util.inspect(payee, { // test
+                depth: null
+              }))
         return { id, client, askPayee, askNarration, narration: n, payee: p }
       },
       onDone: {

@@ -39,7 +39,7 @@ export default createMachine<Context, Event>({
             const [a, ...b] = text!.split(':')
             if (b.length === 0) return { ...ctx, narration: a }
 
-            logger.info('INFO: ', util.inspect(msg, { // test
+            logger.info('INFO: ', util.inspect(ctx, { // test
                 depth: null
               }))
 
