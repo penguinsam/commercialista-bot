@@ -76,7 +76,7 @@ export default class Bot {
           default:
             return this._client.sendMessage(msg.chat.id, '我有咩嘢幫到你您呀 🛸', DEFAULT_KEYBOARD).then((m) => {
               setTimeout (()=> {
-                client.deleteMessage(id, String(m.message_id));
+                this._client.deleteMessage(msg.chat.id, String(m.message_id));
               }, 10000)})
         }
       } catch (err) {
