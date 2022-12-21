@@ -9,7 +9,7 @@ export const buildNarration = (narration: ShortcutNarration, payee: ShortcutPaye
       always: {
         actions: assign({
           narration: (ctx) => narration,
-          payee: (ctx) => payee !== 'ignore' ? payee : undefined
+          payee: (ctx) => payee !== 'ignore' || payee !== '.' ? payee : undefined
         }),
         target: 'questions'
       }

@@ -22,7 +22,10 @@ export default createMachine<Context, Event>({
   predictableActionArguments: true,
   states: {
     shortcut: {
-      entry: ({ client, id }) => client.sendMessage(id, '💨 Choose a shortcut', shortcutsKeyboard()),
+      entry: ({ client, id }) => client.sendMessage(id, 'Choose a shortcut 💨', shortcutsKeyboard()).then((m) => {
+        setTimeout (()=> {
+          client.deleteMessage(id, String(m.message_id-1));
+        }, 5000)}),
       on: {
         ANSWER: [
           {
