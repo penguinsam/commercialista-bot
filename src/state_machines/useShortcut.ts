@@ -72,7 +72,7 @@ const machine = createMachine<Context, Event>({
             try {
               await putEntries([final!])
               await client.sendMessage(id, '✅ All done!', DEFAULT_KEYBOARD).then((m) => {
-                for (let i = 0; i < 8; i++) {
+                for (let i = 0; i < 9; i++) {
                   setTimeout (()=> {
                     client.deleteMessage(id, String(m.message_id-i));
                   }, 5000)}
