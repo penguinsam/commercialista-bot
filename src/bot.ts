@@ -48,7 +48,7 @@ export default class Bot {
           for (let i = 0; i < 2; i++) {
             setTimeout (()=> {
               this._client.deleteMessage(msg.chat.id, String(m.message_id-i));
-            }, 5000)}
+            }, 30000)}
           })
       }
 
@@ -82,7 +82,7 @@ export default class Bot {
             return this._client.sendMessage(msg.chat.id, '我有咩幫到你您 🛸', DEFAULT_KEYBOARD).then((m) => {
               setTimeout (()=> {
                 this._client.deleteMessage(msg.chat.id, String(m.message_id));
-              }, 10000)})
+              }, 30000)})
         }
       } catch (err) {
         logger.error('bot', 'Unexpected error processing a message:', (err as any).message)
