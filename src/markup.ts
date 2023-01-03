@@ -19,7 +19,7 @@ export const CONFIRM_KEYBOARD = {
   reply_markup: {
     resize_keyboard: true,
     keyboard: [
-      [{ text: CONFIRM }, { text: CANCEL }]
+      [{ text: CANCEL }, { text: CONFIRM }]
     ]
   }
 }
@@ -37,7 +37,7 @@ export const CANCEL_OR_DONE_KEYBOARD = {
   reply_markup: {
     resize_keyboard: true,
     keyboard: [
-      [{ text: DONE }, { text: CANCEL }]
+      [{ text: CANCEL }, { text: DONE }]
     ]
   }
 }
@@ -48,7 +48,7 @@ export const accountsKeyboard = (done: boolean, filter?: string) => ({
   reply_markup: {
     resize_keyboard: true,
     keyboard: [
-      done ? [{ text: DONE }, { text: CANCEL }] : [{ text: CANCEL }],
+      done ? [{ text: CANCEL }, { text: DONE }] : [{ text: CANCEL }],
       ...(ACCOUNTS.filter(e => e.startsWith(filter || '')).map(e => [{ text: e }]))
     ]
   }
