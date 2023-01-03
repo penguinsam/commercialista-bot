@@ -31,7 +31,7 @@ export const buildNarration = (narration: ShortcutNarration, payee: ShortcutPaye
       onDone: {
         actions: assign<Context, DoneInvokeEvent<any>>({
           narration: (ctx, { data }) => data.narration,
-          payee: (ctx, { data }) => data.payee.replace("-", "")
+          payee: (ctx, { data }) => data.payee.replace(".", "")
         }),
         target: 'questions'
       }
